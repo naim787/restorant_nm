@@ -104,7 +104,7 @@ fetchUsers();
               <td class="px-6 py-4">{obj.Email}</td>
               <td class="px-6 py-4">{obj.Bis_Loc}</td>
               <td class="px-6 py-4">{obj.Year}</td>
-              <td class="px-6 py-4">{obj.DateLog}</td>
+              <td class="px-6 py-4">{obj.Date_Log}</td>
               <td class="px-6 py-4 flex">
                 <button on:click={() => { showDelete = obj.Name; showAlert = true; }}
                         class="font-medium text-white bg-red-500 rounded-full py-1 px-2">
