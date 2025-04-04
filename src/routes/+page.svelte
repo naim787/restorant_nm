@@ -7,10 +7,11 @@
   
     let obj = [];
 
+    
 
 async function fetchUsers() {
     try {
-        const response = await fetch("/users"); // Panggil endpoint API
+        const response = await fetch("http://127.0.0.1:3000/users"); // Panggil endpoint API
         const data = await response.json();
 
         if (data && typeof data === "object") { // Pastikan data adalah object
@@ -94,13 +95,14 @@ fetchUsers();
           {#each filteredObj as obj}
             <tr class="odd:bg-white bg-gray-900 even:bg-gray-50 even:bg-gray-200 text-gray-600">
               <th class="px-6 py-4">
-                <input type="checkbox" on:change={() => toggleSelection(obj.Id)} />
+                <input type="checkbox" on:change={() => toggleSelection(obj.Id)} /> 
+
               </th>
               <td class="px-6 py-4 font-medium">{obj.Name}</td>
               <td class="px-6 py-4">{obj.Id}</td>
               <td class="px-6 py-4">{obj.Role}</td>
               <td class="px-6 py-4">{obj.Email}</td>
-              <td class="px-6 py-4">{obj.bis_loc}</td>
+              <td class="px-6 py-4">{obj.Bis_Loc}</td>
               <td class="px-6 py-4">{obj.Year}</td>
               <td class="px-6 py-4">{obj.DateLog}</td>
               <td class="px-6 py-4 flex">
