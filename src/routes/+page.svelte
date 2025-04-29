@@ -1,7 +1,7 @@
 <script>
   import "../app.css";
   import NavPanel from "$lib/component/Nav_Panel.svelte";
-  import { CircleX, Search } from "@lucide/svelte";
+  import { CircleX, Search, ShoppingBasket } from "@lucide/svelte";
   import DtaAPI from "$lib/data/Data_Api.js";
   import Footer from "$lib/component/Footer.svelte";
 
@@ -27,33 +27,36 @@ $: if (showData && showData.price && Value) {
 }
 
   function Checkout() {
-  const now = new Date();
 
-  const tanggal = now.getDate();
-  const bulan = now.getMonth() + 1;
-  const tahun = now.getFullYear();
-  const jam = now.getHours();
-  const menit = now.getMinutes();
-
-  let taggal = `${tanggal}/${bulan}/${tahun}`;
-  let waktu = `${jam}:${menit}`;
-
-  // Tambahkan data dan trigger reactivity
-  checkoutData = [
-    ...checkoutData,
-    {
-      data: showData,
-      value: Value,
-      taggal,
-      waktu,
-      subtotal,
+    if (Value >= 1) {
+      const now = new Date();
+    
+      const tanggal = now.getDate();
+      const bulan = now.getMonth() + 1;
+      const tahun = now.getFullYear();
+      const jam = now.getHours();
+      const menit = now.getMinutes();
+    
+      let taggal = `${tanggal}/${bulan}/${tahun}`;
+      let waktu = `${jam}:${menit}`;
+    
+      // Tambahkan data dan trigger reactivity
+      checkoutData = [
+        ...checkoutData,
+        {
+          data: showData,
+          value: Value,
+          taggal,
+          waktu,
+          subtotal,
+        }
+      ];
     }
-  ];
+    showModal = false;
+    Value = 1;
+
 
   console.log(checkoutData); // sekarang harus terisi
-
-  showModal = false;
-  Value = 1;
 }
 
 
@@ -62,17 +65,26 @@ $: if (showData && showData.price && Value) {
 <NavPanel />
 
 <div class="w-[100vw] h-[100vh] bg-gray-950 pt-15">
-  <div class="w-full h-20 flex items-center p-2">
+  <div class="w-full h-20 flex justify-around items-center p-2">
     <div class="w-65 h-10 rounded-md flex justify-between items-center">
       <input type="text" name="" id="" class="bg-white w-50 h-10 text-black rounded-md p-2" placeholder="Search Menu"/>
       <Search class="p-2 rounded-md bg-yellow-500 text-black" size={40}/>
     </div>
 
-    <div class="drawer drawer-end z-20">
+    <div class="p-2 mx-3 flex">
+      <p class="">Bugkus?</p>
+      <input type="checkbox" class="checkbox" />
+    </div>
+
+    {#if  checkoutData.length >= 1}
+    <div class="drawer drawer-end z-20 ml-10">
       <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
         <!-- Page content here -->
-        <label for="my-drawer-4" class="drawer-button btn btn-primary">Open drawer</label>
+        <label for="my-drawer-4" class="drawer-button btn btn-primary indicator">
+          <span class="indicator-item badge badge-secondary">{checkoutData.length}</span>
+          <ShoppingBasket />
+        </label>
       </div>
       <div class="drawer-side">
         <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -102,7 +114,8 @@ $: if (showData && showData.price && Value) {
 
         </ul>
       </div>
-    </div>
+    </div>  
+    {/if}
 
 
   </div>
