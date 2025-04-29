@@ -1,5 +1,3 @@
-// src/lib/data/dtaAPI.js
-
 const DtaAPI = [
     {
       id: "201",
@@ -7,8 +5,8 @@ const DtaAPI = [
       description: "*daging ayam, *beras, *wortel, *minyak ikan, *vitamin",
       image_url: "./mkn_0.jpg",
       price: 25000,
-      pajak: 2500,
       stock: 120,
+      discount: 10, // 10%
     },
     {
       id: "202",
@@ -16,8 +14,8 @@ const DtaAPI = [
       description: "*daging sapi, *kentang, *kacang polong, *minyak kelapa",
       image_url: "./mkn_1.jpg",
       price: 30000,
-      pajak: 3000,
       stock: 85,
+      discount: 0,
     },
     {
       id: "203",
@@ -25,8 +23,8 @@ const DtaAPI = [
       description: "*daging domba, *wortel, *brokoli, *serat alami",
       image_url: "./mkn_2.jpg",
       price: 32000,
-      pajak: 3200,
       stock: 60,
+      discount: 15,
     },
     {
       id: "204",
@@ -34,8 +32,8 @@ const DtaAPI = [
       description: "*ikan tuna, *jagung, *ubi, *omega-3, *vitamin E",
       image_url: "./mkn_3.jpg",
       price: 28000,
-      pajak: 2800,
       stock: 95,
+      discount: 50,
     },
     {
       id: "205",
@@ -43,8 +41,8 @@ const DtaAPI = [
       description: "*daging bebek, *beras merah, *wortel, *probiotik",
       image_url: "./mkn_4.jpg",
       price: 35000,
-      pajak: 3500,
       stock: 40,
+      discount: 20,
     },
     {
       id: "206",
@@ -52,8 +50,8 @@ const DtaAPI = [
       description: "*ikan salmon, *kacang hijau, *ubi, *lemak sehat",
       image_url: "mkn_5.jpg",
       price: 36000,
-      pajak: 3600,
       stock: 55,
+      discount: 5,
     },
     {
       id: "207",
@@ -61,17 +59,17 @@ const DtaAPI = [
       description: "*daging kalkun, *beras putih, *labu, *serat alami",
       image_url: "mkn_6.jpg",
       price: 34000,
-      pajak: 3400,
       stock: 70,
+      discount: 25,
     },
-    {  
-     id : "155",
-     name : "DADA TUNA",
-     description: "*ayam dada, *ikan tuna, *bumbu halus, *daun jeruk, *daun salam, *serai, *jahe",
-     image_url : "mkn_7.jpg",
-     price: 5000,
-     pajak: 15000,
-     stock : 100,
+    {
+      id: "155",
+      name: "DADA TUNA",
+      description: "*ayam dada, *ikan tuna, *bumbu halus, *daun jeruk, *daun salam, *serai, *jahe",
+      image_url: "mkn_7.jpg",
+      price: 5000,
+      stock: 100,
+      discount: 5,
     }
   ];
   
