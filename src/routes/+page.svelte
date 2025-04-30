@@ -4,13 +4,22 @@
   import { CircleX, Search, ShoppingBasket } from "@lucide/svelte";
   import DtaAPI from "$lib/data/Data_Api.js";
   import Footer from "$lib/component/Footer.svelte";
-
-  const pajak = 10
+  import { onMount, tick } from "svelte";
+  const pajak = 10;
 
   // filter list menu
   let searchTerm = ''
 
-  const data = DtaAPI;
+  let data = [];
+  let loadingMenu = true;
+
+  onMount(async () => {
+    setTimeout(async () => {
+      data = DtaAPI;
+      loadingMenu = false;
+      await tick(); // Memastikan reaktivitas dipicu setelah data masuk
+    }, 0); // simulasi lazy loading
+  });
 
   // card show modal
   let showModal = false;
@@ -70,9 +79,7 @@ $: if (showData && showData.price && Value) {
 
 
  // filter list menu
- $: filteredData = data.filter(item =>
-  item.name.toLowerCase().includes(searchTerm.toLowerCase())
-);
+  $: filteredData = data.filter(item =>item.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
 
 
@@ -82,15 +89,19 @@ $: if (showData && showData.price && Value) {
 
 <div class="w-[100vw] h-[100vh] bg-gray-950 pt-15">
   <div class="w-full h-20 flex justify-around items-center p-2">
-    <div class="w-65 h-10 rounded-md flex justify-between items-center">
-      <input type="text" name="" id="" class="bg-white w-50 h-10 text-black rounded-md p-2" placeholder="Search Menu" bind:value={searchTerm}/>
-      <Search class="p-2 rounded-md bg-yellow-500 text-black" size={40}/>
-    </div>
+    {#if loadingMenu}
+    <div class="skeleton w-65 h-10 rounded-md"></div>
+       {:else}
+      <div class="w-65 h-10 rounded-md flex justify-between items-center">
+        <input type="text" name="" id="" class="bg-white w-50 h-10 text-black rounded-md p-2" placeholder="Search Menu" bind:value={searchTerm}/>
+        <Search class="p-2 rounded-md bg-yellow-500 text-black" size={40}/>
+      </div>
 
-    <div class="p-2 mx-3 flex">
-      <p class="">Bugkus?</p>
-      <input type="checkbox" class="checkbox" />
-    </div>
+      <div class="p-2 mx-3 flex">
+        <p class="">Bugkus?</p>
+        <input type="checkbox" class="checkbox" />
+      </div>
+    {/if}
 
 <!-- list checkout -->
     {#if  checkoutData.length >= 1}
@@ -142,26 +153,40 @@ $: if (showData && showData.price && Value) {
 <!-- list menu -->
   <div class="w-full h-[85vh] flex flex-wrap justify-evenly items-center overflow-auto">
 
-    {#each filteredData as item}
-    <div
-    class="card bg-base-100 w-58 md:w-96 h-40 shadow-sm m-1 bg-cover bg-center"
-    style={`background-image: url(${item.image_url})`}
-  >
-  <div class="absolute inset-0 bg-black opacity-40"></div> <!-- overlay -->
-      <div class="card-body z-10">
-        <div class="">
-          <h2 class="card-title text-2xl ">{item.name}</h2>
-        </div>
-        <p>{item.description}</p>
-        <div class="card-actions justify-end">
-          <button class="btn bg-green-500 text-black" on:click={() => {
-            showModal = true;
-            showData = item;
-            }}>Rp: <span class="">{item.price}</span></button>
-        </div>
-      </div>
+    {#if loadingMenu}
+    <div class="card bg-black w-58 md:w-96 h-40 shadow-sm m-1 flex skeleton">
     </div>
-    {/each}
+    <div class="card bg-black w-58 md:w-96 h-40 shadow-sm m-1 flex skeleton">
+    </div>
+    <div class="card bg-black w-58 md:w-96 h-40 shadow-sm m-1 flex skeleton">
+    </div>
+    <div class="card bg-black w-58 md:w-96 h-40 shadow-sm m-1 flex skeleton">
+    </div>
+    <div class="card bg-black w-58 md:w-96 h-40 shadow-sm m-1 flex skeleton">
+    </div>
+    <div class="card bg-black w-58 md:w-96 h-40 shadow-sm m-1 flex skeleton">
+    </div>
+    <div class="card bg-black w-58 md:w-96 h-40 shadow-sm m-1 flex skeleton">
+    </div>
+      {:else}
+        {#each filteredData as item}
+        <div class="card bg-base-100 w-58 md:w-96 h-40 shadow-sm m-1 bg-cover bg-center" style={`background-image: url(${item.image_url})`}>
+          <div class="absolute inset-0 bg-black opacity-40"></div> 
+          <div class="card-body z-10">
+            <div class="">
+              <h2 class="card-title text-2xl ">{item.name}</h2>
+            </div>
+            <p>{item.description}</p>
+            <div class="card-actions justify-end">
+              <button class="btn bg-green-500 text-black" on:click={() => {
+                showModal = true;
+                showData = item;
+                }}>Rp: <span class="">{item.price}</span></button>
+            </div>
+          </div>
+        </div>
+        {/each}
+    {/if}
 
 <!-- popup heighlight -->
 {#if showModal}
