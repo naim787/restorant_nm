@@ -7,9 +7,15 @@
 
   const pajak = 10
 
+  // filter list menu
+  let searchTerm = ''
+
   const data = DtaAPI;
+
+  // card show modal
   let showModal = false;
 
+  
   let Value = 1;
 
   let checkoutData = [];
@@ -30,13 +36,13 @@ $: if (showData && showData.price && Value) {
 
     if (Value >= 1) {
       const now = new Date();
-    
+      
       const tanggal = now.getDate();
       const bulan = now.getMonth() + 1;
       const tahun = now.getFullYear();
       const jam = now.getHours();
       const menit = now.getMinutes();
-    
+      
       let taggal = `${tanggal}/${bulan}/${tahun}`;
       let waktu = `${jam}:${menit}`;
     
@@ -54,10 +60,20 @@ $: if (showData && showData.price && Value) {
     }
     showModal = false;
     Value = 1;
+  }
+  
+  // hapus pruduct dari list checkout
+  function removeCheckout(i) {
+    checkoutData = checkoutData.filter((_, index) => index !== i);
+ }
 
 
-  console.log(checkoutData); // sekarang harus terisi
-}
+
+ // filter list menu
+ $: filteredData = data.filter(item =>
+  item.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
 
 
 </script>
@@ -67,7 +83,7 @@ $: if (showData && showData.price && Value) {
 <div class="w-[100vw] h-[100vh] bg-gray-950 pt-15">
   <div class="w-full h-20 flex justify-around items-center p-2">
     <div class="w-65 h-10 rounded-md flex justify-between items-center">
-      <input type="text" name="" id="" class="bg-white w-50 h-10 text-black rounded-md p-2" placeholder="Search Menu"/>
+      <input type="text" name="" id="" class="bg-white w-50 h-10 text-black rounded-md p-2" placeholder="Search Menu" bind:value={searchTerm}/>
       <Search class="p-2 rounded-md bg-yellow-500 text-black" size={40}/>
     </div>
 
@@ -76,6 +92,7 @@ $: if (showData && showData.price && Value) {
       <input type="checkbox" class="checkbox" />
     </div>
 
+<!-- list checkout -->
     {#if  checkoutData.length >= 1}
     <div class="drawer drawer-end z-20 ml-10">
       <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
@@ -95,7 +112,7 @@ $: if (showData && showData.price && Value) {
           </div>
           <div class="w-full h-[70vh] flex flex-wrap py-2 justify-start items-start overflow-scroll">
             {#if checkoutData.length > 0}
-            {#each checkoutData as item}
+            {#each checkoutData as item, index}
               <div class="w-full h-15 bg-black flex justify-evenly items-center rounded-full m-1">
                 <div class="w-10 h-10 bg-red-500 rounded-full bg-cover bg-center"
                   style={`background-image: url(${item.data.image_url})`}
@@ -106,7 +123,9 @@ $: if (showData && showData.price && Value) {
                 </div>
                 <h1 class="">Rp:{item.subtotal}</h1>
                 <h1 class="">{item.value}</h1>
-                <CircleX size={30} class="text-red-500"/>
+                <button type="submit" class="btn"  on:click={() => removeCheckout(index)} >
+                  <CircleX size={30} class="text-red-500"/>
+                </button>
               </div>
             {/each}
           {/if}
@@ -123,7 +142,7 @@ $: if (showData && showData.price && Value) {
 <!-- list menu -->
   <div class="w-full h-[85vh] flex flex-wrap justify-evenly items-center overflow-auto">
 
-    {#each data as item}
+    {#each filteredData as item}
     <div
     class="card bg-base-100 w-58 md:w-96 h-40 shadow-sm m-1 bg-cover bg-center"
     style={`background-image: url(${item.image_url})`}
